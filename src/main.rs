@@ -16,9 +16,9 @@ fn main() {
 
 
 
-    let text_section = match file.get_section(".text") {
-        Some(s) => s,
-        None => panic!("Failed to look up .text section"),
+    let text_section = match file.get_section(".symtab") {
+        Some(t) => t,
+        None => panic!("Failed to look up section"),
     };
     // println!("{:?}", text_section.data);
 
@@ -26,10 +26,23 @@ fn main() {
         Ok(s) => s,
         Err(_) => panic!("Failed to get symbols"),
     };
-    println!("{}",symbols)
 
+    //https://github.com/cole14/rust-elf/blob/master/src/lib.rs#L280
+    //     symbols.push(types::Symbol {
+    //             name:    try!(utils::get_string(link, name as usize)),
+    //             value:   value,
+    //             size:    size,
+    //             shndx:   shndx,
+    //             symtype: types::SymbolType(info[0] & 0xf),
+    //             bind:    types::SymbolBind(info[0] >> 4),
+    //             vis:     types::SymbolVis(other[0] & 0x3),
+    //         });
+    //     Ok(())
+    // }
+
+    println!("{} symbols found", symbols.len());
     for s in symbols.iter() {
-        println!("{}", s)
+        println!("{}", s.name);
     }
 
 }

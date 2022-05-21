@@ -1,5 +1,5 @@
 extern crate elf;
-
+use rustc_demangle::demangle;
 
 use std::env;
 use std::path::PathBuf;
@@ -42,7 +42,8 @@ fn main() {
 
     println!("{} symbols found", symbols.len());
     for s in symbols.iter() {
-        println!("{}", s.name);
+        println!("{}", demangle(&s.name).to_string());
+
     }
 
 }
